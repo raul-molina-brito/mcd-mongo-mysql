@@ -125,7 +125,15 @@ Respuesta:
 ```sql
 -- Su respuesta aqui:
 
-SELECT ...
+SELECT  a.actor_id, a.first_name , a.last_name , count(a.actor_id) as comedy_film_count
+from film f,  film_actor fa, actor a, film_category fc, category c
+WHERE f.film_id=fa.film_id
+and fa.actor_id=a.actor_id
+and f.film_id =fc.film_id
+and fc.category_id=c.category_id
+and c.name='Comedy'
+group by a.actor_id, a.first_name , a.last_name
+order by comedy_film_count desc limit 10;
 
 ```
 
