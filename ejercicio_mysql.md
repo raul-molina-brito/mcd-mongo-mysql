@@ -69,6 +69,16 @@ FROM film f, language la
 where  
 f.language_id = la.language_id
 group by la.language_id, la.name ;
+
+-- MEJORANDO LA CONSULTA
+select l2.language_id, l2.name as language,CASE WHEN s2.cantidad is NULL THEN 0 ELSE s2.cantidad END as film_count   from language  l2 LEFT JOIN (
+SELECT la.language_id, la.name as language, count(la.language_id) as cantidad
+FROM film f, language la
+where  
+f.language_id = la.language_id
+group by la.language_id, la.name) as s2
+on (l2.language_id=s2.language_id) ;
+
 ```
 
 3.  Seleccionar todos los actores que participaron mas de 35 peliculas.
