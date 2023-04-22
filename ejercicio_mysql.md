@@ -162,6 +162,19 @@ Respuesta:
 ```sql
 -- Su respuesta aqui:
 
-SELECT ...
+SELECT  a.actor_id, a.first_name , a.last_name 
+from film f,  film_actor fa, actor a
+WHERE f.film_id=fa.film_id
+and fa.actor_id=a.actor_id
+and a.actor_id not in( SELECT  a1.actor_id
+from film f1,  film_actor fa1, actor a1, film_category fc1, category c1
+WHERE f1.film_id=fa1.film_id
+and fa1.actor_id=a1.actor_id
+and f1.film_id =fc1.film_id
+and fc1.category_id=c1.category_id
+and c1.name='Comedy'
+group by a1.actor_id
+) 
+group by a.actor_id, a.first_name , a.last_name
 
 ```
