@@ -38,7 +38,7 @@ Respuesta:
 -- Su respuesta aqui:
 
 SELECT  c.city_id,c.city, count(c.city_id) as store_count
-FROM  store s, address a, city c
+FROM  store s, address a, city c, film f
 WHERE s.address_id=a.address_id
 and  a.city_id=c.city_id
 group by  c.city_id,c.city;
@@ -64,8 +64,11 @@ Respuesta:
 ```sql
 -- Su respuesta aqui:
 
-SELECT ...
-
+SELECT la.language_id, la.name as language, count(la.language_id) as cantidad
+FROM film f, language la
+where  
+f.language_id = la.language_id
+group by la.language_id, la.name ;
 ```
 
 3.  Seleccionar todos los actores que participaron mas de 35 peliculas.
