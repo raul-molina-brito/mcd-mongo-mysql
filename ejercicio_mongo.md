@@ -143,6 +143,7 @@ db.actor.aggregate([
   },
   {
     $group: {
+      _id: "$_id",
       first_name: { $first: "$first_name" },
       last_name: { $first: "$last_name" },
       total_films: { $sum: 1 }
