@@ -178,5 +178,64 @@ Resultado:
 
 Respuesta:
 ```
-db.film_actor.aggregate(...
+db.actor.aggregate([
+  {
+    $lookup: {
+      from: "film_actor",
+      localField: "_id",
+      foreignField: "actor_id",
+      as: "actor_films"
+    }
+  },
+  {
+    $unwind: "$actor_films"
+  },
+  {
+    $lookup: {
+      from: "film_category",
+      localField: "actor_films.film_id",
+      foreignField: "film_id",
+      as: "film_categories"
+    }
+  },
+  {
+    $unwind: "$film_categories"
+  },
+  {
+    $lookup: {
+      from: "category",
+      localField: "film_categories.category_id",
+      foreignField: "_id",
+      as: "category"
+    }
+  },
+  {
+    $unwind: "$category"
+  },
+  {
+    $match: {
+      "category.name": "Comedy"
+    }
+  },
+  {
+    $group: {
+      _id: {
+        actor_id: "$_id",
+        actor_first_name: "$first_name",
+        actor_last_name: "$last_name",
+        category_id: "$category._id",
+        category_name: "$category.name"
+      },
+      films_count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: {
+      films_count: -1
+    }
+  },
+  {
+    $limit: 10
+  }
+])
 ```
