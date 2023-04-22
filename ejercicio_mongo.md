@@ -129,27 +129,30 @@ Resutado:
 Respuesta:
 
 ```
-db.film.aggregate([
+db.actor.aggregate([
   {
     $lookup: {
       from: "film_actor",
       localField: "_id",
-      foreignField: "film_id",
-      as: "film_actors"
+      foreignField: "actor_id",
+      as: "actor_films"
     }
   },
   {
-    $unwind: "$film_actors"
+    $unwind: "$actor_films"
   },
   {
-    $lookup: {
-      from: "actor",
-      localField: "film_actors.actor_id",
-      foreignField: "_id",
-      as: "actors"
+    $group: {
+      first_name: { $first: "$first_name" },
+      last_name: { $first: "$last_name" },
+      total_films: { $sum: 1 }
     }
   },
-
+  {
+    $match: {
+      total_films: { $gt: 35 }
+    }
+  }
 ])
 ```
 
